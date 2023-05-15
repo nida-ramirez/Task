@@ -1,0 +1,53 @@
+interface Task {
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
+class TaskManager {
+  private tasks: Task[] = [];
+  private nextId: number = 1;
+
+  addTask(title: string): void {
+    const newTask: Task = {
+      id: this.nextId,
+      title,
+      completed: false,
+    };
+
+    this.tasks.push(newTask);
+    this.nextId++;
+  }
+
+  completeTask(id: number): void {
+    const taskIndex = this.findTaskIndexById(id);
+
+    if (taskIndex !== -1) {
+      this.tasks[taskIndex].completed = true;
+    }
+  }
+
+  removeTask(id: number): void {
+    const taskIndex = this.findTaskIndexById(id);
+
+    if (taskIndex !== -1) {
+      this.tasks.splice(taskIndex, 1);
+    }
+  }
+
+  getTasks(): Task[] {
+    return this.tasks;
+  }
+
+  private findTaskIndexById(id: number): number {
+    return this.tasks.findIndex((task) => task.id === id);
+  }
+}
+
+const taskManager = new TaskManager();
+taskManager.addTask("Buy groceries");
+taskManager.addTask("Finish homework");
+taskManager.completeTask(1);
+taskManager.removeTask(2);
+const tasks = taskManager.getTasks();
+console.log(tasks);
